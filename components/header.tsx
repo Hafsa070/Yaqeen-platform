@@ -198,9 +198,7 @@ export function Header() {
               </div>
             )}
 
-            {userType !== "family" && (
-              <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white">{t.donateNow}</Button>
-            )}
+            
           </div>
 
           {/* Mobile menu button */}
@@ -294,9 +292,7 @@ export function Header() {
                     <Globe className="w-4 h-4 mr-1" />
                     {language === "en" ? "العربية" : "English"}
                   </Button>
-                  {userType !== "family" && (
-                    <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white">{t.donateNow}</Button>
-                  )}
+            
                 </div>
               </div>
             </div>
