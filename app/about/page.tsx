@@ -208,7 +208,7 @@ export default function AboutPage() {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: "url('/placeholder.svg?height=500&width=1200&text=Gaza+Skyline')",
+              backgroundImage: "url('/hero.jpg')",
             }}
           />
           <div className="absolute inset-0 bg-black/50" />
