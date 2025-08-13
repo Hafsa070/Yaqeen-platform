@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Yaqeen - Humanitarian Support for Gaza | يقين - الدعم الإنساني لغزة",
   description:
     "A humanitarian donation platform connecting families in Gaza with global supporters | منصة تبرعات إنسانية تربط العائلات في غزة بالداعمين حول العالم",
-  generator: "v0.dev",
+  generator: "",
 }
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -312,7 +312,7 @@ export default function HowItWorksPage() {
                     </p>
 
                     <ul className="space-y-2 sm:space-y-3">
-                      {step.details.map((detail, idx) => (
+                      {step.details.map((detail: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, idx: Key | null | undefined) => (
                         <li key={idx} className="flex items-center gap-3">
                           <CheckCircle className={`w-4 h-4 sm:w-5 sm:h-5 ${colorClass} flex-shrink-0`} />
                           <span className="text-sm sm:text-base text-gray-700">{detail}</span>
