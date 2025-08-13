@@ -209,7 +209,7 @@ export default function HomePage() {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: "url('/placeholder.svg?height=600&width=1200')",
+              backgroundImage: "url('/hero.jpg')",
             }}
           />
           <div className="absolute inset-0 bg-black/60" />
