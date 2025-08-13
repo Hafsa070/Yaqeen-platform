@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Globe, Menu, X, ChevronDown, Users, Heart } from "lucide-react"
+import { Globe, Menu, X, ChevronDown, Users, Heart, Settings } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 const translations = {
@@ -26,9 +26,11 @@ const translations = {
     welcome: "Welcome",
     family: "Family",
     donor: "Donor",
+    admin: "Admin",
     logout: "Logout",
     donateNow: "Donate Now",
     signUpAs: "Sign Up As:",
+    adminDashboard: "Admin Dashboard", // Added admin dashboard translation
   },
   ar: {
     home: "الرئيسية",
@@ -49,16 +51,18 @@ const translations = {
     welcome: "مرحباً",
     family: "عائلة",
     donor: "متبرع",
+    admin: "مدير",
     logout: "تسجيل الخروج",
     donateNow: "تبرع الآن",
     signUpAs: "إنشاء حساب كـ:",
+    adminDashboard: "لوحة تحكم المدير", // Added admin dashboard translation
   },
 }
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [language, setLanguage] = useState<"en" | "ar">("en")
-  const [userType, setUserType] = useState<"family" | "donor" | null>(null)
+  const [userType, setUserType] = useState<"family" | "donor" | "admin" | null>(null)
 
   const t = translations[language]
 
@@ -95,6 +99,13 @@ export function Header() {
         ...baseNav.slice(0, 1),
         { name: t.submitRequest, href: "/register/family" },
         { name: t.myCase, href: "/dashboard" },
+        ...baseNav.slice(1),
+      ]
+    } else if (userType === "admin") {
+      return [
+        ...baseNav.slice(0, 1),
+        { name: t.adminDashboard, href: "/admin/dashboard" },
+        { name: t.browseCases, href: "/cases" },
         ...baseNav.slice(1),
       ]
     } else {
@@ -181,11 +192,21 @@ export function Header() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setUserType("admin")}
+                  className="text-gray-500 hover:text-[#007A3D] text-xs"
+                >
+                  <Settings className="w-4 h-4 mr-1" />
+                  Admin
+                </Button>
               </>
             ) : (
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-600">
-                  {t.welcome}, {userType === "family" ? t.family : t.donor}
+                  {t.welcome}, {userType === "family" ? t.family : userType === "donor" ? t.donor : t.admin}
                 </span>
                 <Button
                   variant="outline"
@@ -198,7 +219,9 @@ export function Header() {
               </div>
             )}
 
-            
+            {userType !== "family" && userType !== "admin" && (
+              <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white">{t.donateNow}</Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -261,12 +284,24 @@ export function Header() {
                           {t.generousDonor}
                         </Button>
                       </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setUserType("admin")
+                          setIsMenuOpen(false)
+                        }}
+                        className="w-full text-gray-500 hover:text-[#007A3D] justify-start"
+                      >
+                        <Settings className="w-4 h-4 mr-2" />
+                        Admin Access
+                      </Button>
                     </div>
                   </>
                 ) : (
                   <div className="flex items-center justify-between px-2">
                     <span className="text-sm text-gray-600">
-                      {t.welcome}, {userType === "family" ? t.family : t.donor}
+                      {t.welcome}, {userType === "family" ? t.family : userType === "donor" ? t.donor : t.admin}
                     </span>
                     <Button
                       variant="outline"
@@ -292,7 +327,9 @@ export function Header() {
                     <Globe className="w-4 h-4 mr-1" />
                     {language === "en" ? "العربية" : "English"}
                   </Button>
-            
+                  {userType !== "family" && userType !== "admin" && (
+                    <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white">{t.donateNow}</Button>
+                  )}
                 </div>
               </div>
             </div>
