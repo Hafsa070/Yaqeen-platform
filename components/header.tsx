@@ -23,6 +23,8 @@ const translations = {
     requestAssistance: "Request assistance",
     generousDonor: "Generous Donor",
     helpFamilies: "Help families",
+    adminAccess: "Admin Access", // Added admin access translation
+    adminLogin: "Admin login", // Added admin login translation
     welcome: "Welcome",
     family: "Family",
     donor: "Donor",
@@ -30,7 +32,7 @@ const translations = {
     logout: "Logout",
     donateNow: "Donate Now",
     signUpAs: "Sign Up As:",
-    adminDashboard: "Admin Dashboard", // Added admin dashboard translation
+    adminDashboard: "Admin Dashboard",
   },
   ar: {
     home: "الرئيسية",
@@ -48,6 +50,8 @@ const translations = {
     requestAssistance: "طلب المساعدة",
     generousDonor: "متبرع كريم",
     helpFamilies: "مساعدة العائلات",
+    adminAccess: "وصول المدير", // Added admin access translation
+    adminLogin: "دخول المدير", // Added admin login translation
     welcome: "مرحباً",
     family: "عائلة",
     donor: "متبرع",
@@ -55,7 +59,7 @@ const translations = {
     logout: "تسجيل الخروج",
     donateNow: "تبرع الآن",
     signUpAs: "إنشاء حساب كـ:",
-    adminDashboard: "لوحة تحكم المدير", // Added admin dashboard translation
+    adminDashboard: "لوحة تحكم المدير",
   },
 }
 
@@ -193,15 +197,12 @@ export function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setUserType("admin")}
-                  className="text-gray-500 hover:text-[#007A3D] text-xs"
-                >
-                  <Settings className="w-4 h-4 mr-1" />
-                  Admin
-                </Button>
+                <Link href="/admin/login">
+                  <Button variant="ghost" size="sm" className="text-gray-500 hover:text-[#007A3D] text-xs">
+                    <Settings className="w-4 h-4 mr-1" />
+                    {t.adminAccess}
+                  </Button>
+                </Link>
               </>
             ) : (
               <div className="flex items-center space-x-2">
@@ -217,10 +218,6 @@ export function Header() {
                   {t.logout}
                 </Button>
               </div>
-            )}
-
-            {userType !== "family" && userType !== "admin" && (
-              <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white">{t.donateNow}</Button>
             )}
           </div>
 
@@ -284,18 +281,17 @@ export function Header() {
                           {t.generousDonor}
                         </Button>
                       </Link>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setUserType("admin")
-                          setIsMenuOpen(false)
-                        }}
-                        className="w-full text-gray-500 hover:text-[#007A3D] justify-start"
-                      >
-                        <Settings className="w-4 h-4 mr-2" />
-                        Admin Access
-                      </Button>
+                      <Link href="/admin/login" className="w-full">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-full text-gray-500 hover:text-[#007A3D] justify-start"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <Settings className="w-4 h-4 mr-2" />
+                          {t.adminAccess}
+                        </Button>
+                      </Link>
                     </div>
                   </>
                 ) : (
@@ -327,9 +323,6 @@ export function Header() {
                     <Globe className="w-4 h-4 mr-1" />
                     {language === "en" ? "العربية" : "English"}
                   </Button>
-                  {userType !== "family" && userType !== "admin" && (
-                    <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white">{t.donateNow}</Button>
-                  )}
                 </div>
               </div>
             </div>

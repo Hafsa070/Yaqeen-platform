@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -8,16 +8,148 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { DonationForm } from "@/components/donation-form"
 import { Heart, DollarSign, Users, TrendingUp, Bell, Settings, ExternalLink, MapPin } from "lucide-react"
+
+const translations = {
+  en: {
+    welcomeBack: "Welcome back",
+    memberSince: "Member since",
+    totalDonated: "Total Donated",
+    familiesSupported: "Families Supported",
+    impactRate: "Impact Rate",
+    overview: "Overview",
+    donations: "Donations",
+    favorites: "Favorites",
+    settings: "Settings",
+    recentUpdates: "Recent Updates",
+    favoriteFamilies: "Favorite Families",
+    donationHistory: "Donation History",
+    fundingProgress: "Funding Progress",
+    donateNow: "Donate Now",
+    viewDetails: "View Details",
+    accountSettings: "Account Settings",
+    accountSettingsDesc: "Manage your account preferences and notification settings.",
+    editProfile: "Edit Profile",
+    donate: "Donate",
+    updated: "Updated",
+    // Family names
+    alMahmoudFamily: "Al-Mahmoud Family",
+    abuHassanFamily: "Abu Hassan Family",
+    alZahraFamily: "Al-Zahra Family",
+    alQasemiFamily: "Al-Qasemi Family",
+    abuSalimFamily: "Abu Salim Family",
+    alNajjarFamily: "Al-Najjar Family",
+    // Assistance types
+    medicalTreatment: "Medical Treatment",
+    foodShelter: "Food & Shelter",
+    educationSupport: "Education Support",
+    emergencyRelief: "Emergency Relief",
+    rebuildingHome: "Rebuilding Home",
+    cleanWater: "Clean Water",
+    // Locations
+    gazaCity: "Gaza City",
+    khanYounis: "Khan Younis",
+    rafah: "Rafah",
+    deirAlBalah: "Deir al-Balah",
+    jabalia: "Jabalia",
+    beitHanoun: "Beit Hanoun",
+    // Status
+    delivered: "Delivered",
+    inProgress: "In Progress",
+    // Updates
+    laylasTreatmentProgress: "Layla's Treatment Progress",
+    laylasTreatmentMessage: "Thank you for your support! Layla is responding well to treatment.",
+    newTemporaryHousing: "New Temporary Housing",
+    newTemporaryHousingMessage: "The family has moved to better temporary accommodation.",
+    daysAgo: "days ago",
+    weekAgo: "week ago",
+  },
+  ar: {
+    welcomeBack: "مرحباً بعودتك",
+    memberSince: "عضو منذ",
+    totalDonated: "إجمالي التبرعات",
+    familiesSupported: "العائلات المدعومة",
+    impactRate: "معدل التأثير",
+    overview: "نظرة عامة",
+    donations: "التبرعات",
+    favorites: "المفضلة",
+    settings: "الإعدادات",
+    recentUpdates: "التحديثات الأخيرة",
+    favoriteFamilies: "العائلات المفضلة",
+    donationHistory: "تاريخ التبرعات",
+    fundingProgress: "تقدم التمويل",
+    donateNow: "تبرع الآن",
+    viewDetails: "عرض التفاصيل",
+    accountSettings: "إعدادات الحساب",
+    accountSettingsDesc: "إدارة تفضيلات حسابك وإعدادات الإشعارات.",
+    editProfile: "تعديل الملف الشخصي",
+    donate: "تبرع",
+    updated: "تم التحديث",
+    // Family names
+    alMahmoudFamily: "عائلة المحمود",
+    abuHassanFamily: "عائلة أبو حسن",
+    alZahraFamily: "عائلة الزهراء",
+    alQasemiFamily: "عائلة القاسمي",
+    abuSalimFamily: "عائلة أبو سالم",
+    alNajjarFamily: "عائلة النجار",
+    // Assistance types
+    medicalTreatment: "علاج طبي",
+    foodShelter: "طعام ومأوى",
+    educationSupport: "دعم تعليمي",
+    emergencyRelief: "إغاثة طارئة",
+    rebuildingHome: "إعادة بناء المنزل",
+    cleanWater: "مياه نظيفة",
+    // Locations
+    gazaCity: "مدينة غزة",
+    khanYounis: "خان يونس",
+    rafah: "رفح",
+    deirAlBalah: "دير البلح",
+    jabalia: "جباليا",
+    beitHanoun: "بيت حانون",
+    // Status
+    delivered: "تم التسليم",
+    inProgress: "قيد التنفيذ",
+    // Updates
+    laylasTreatmentProgress: "تقدم علاج ليلى",
+    laylasTreatmentMessage: "شكراً لدعمكم! ليلى تستجيب بشكل جيد للعلاج.",
+    newTemporaryHousing: "سكن مؤقت جديد",
+    newTemporaryHousingMessage: "انتقلت العائلة إلى سكن مؤقت أفضل.",
+    daysAgo: "أيام مضت",
+    weekAgo: "أسبوع مضى",
+  },
+}
 
 export default function DonorDashboardPage() {
   const [activeTab, setActiveTab] = useState("overview")
+  const [language, setLanguage] = useState<"en" | "ar">("en")
+  const [showDonationForm, setShowDonationForm] = useState(false)
+  const [selectedFamily, setSelectedFamily] = useState<{ name: string; id: string } | null>(null)
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const currentLang = document.documentElement.lang as "en" | "ar"
+      setLanguage(currentLang)
+    }
+
+    handleLanguageChange()
+
+    const observer = new MutationObserver(handleLanguageChange)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  const t = translations[language]
 
   // Mock donor data
   const donorData = {
-    name: "Sarah Johnson",
+    name: language === "ar" ? "سارة جونسون" : "Sarah Johnson",
     email: "sarah.johnson@email.com",
-    joinDate: "January 2024",
+    joinDate: language === "ar" ? "يناير 2024" : "January 2024",
     totalDonated: 1250,
     familiesSupported: 5,
     avatar: "/placeholder.svg?height=80&width=80&text=SJ",
@@ -26,29 +158,29 @@ export default function DonorDashboardPage() {
   const donationHistory = [
     {
       id: 1,
-      family: "Al-Mahmoud Family",
+      family: t.alMahmoudFamily,
       amount: 500,
       date: "2024-01-15",
-      status: "Delivered",
-      type: "Medical Treatment",
+      status: t.delivered,
+      type: t.medicalTreatment,
       image: "/placeholder.svg?height=60&width=60&text=Family+1",
     },
     {
       id: 2,
-      family: "Abu Hassan Family",
+      family: t.abuHassanFamily,
       amount: 300,
       date: "2024-01-10",
-      status: "In Progress",
-      type: "Food & Shelter",
+      status: t.inProgress,
+      type: t.foodShelter,
       image: "/placeholder.svg?height=60&width=60&text=Family+2",
     },
     {
       id: 3,
-      family: "Al-Zahra Family",
+      family: t.alZahraFamily,
       amount: 200,
       date: "2024-01-05",
-      status: "Delivered",
-      type: "Education Support",
+      status: t.delivered,
+      type: t.educationSupport,
       image: "/placeholder.svg?height=60&width=60&text=Family+3",
     },
   ]
@@ -56,42 +188,47 @@ export default function DonorDashboardPage() {
   const favoriteFamilies = [
     {
       id: 1,
-      name: "Al-Mahmoud Family",
-      type: "Medical Treatment",
-      location: "Gaza City",
+      name: t.alMahmoudFamily,
+      type: t.medicalTreatment,
+      location: t.gazaCity,
       progress: 85,
       image: "/placeholder.svg?height=100&width=100&text=Family+1",
-      lastUpdate: "2 days ago",
+      lastUpdate: `2 ${t.daysAgo}`,
     },
     {
       id: 2,
-      name: "Abu Hassan Family",
-      type: "Food & Shelter",
-      location: "Khan Younis",
+      name: t.abuHassanFamily,
+      type: t.foodShelter,
+      location: t.khanYounis,
       progress: 60,
       image: "/placeholder.svg?height=100&width=100&text=Family+2",
-      lastUpdate: "1 week ago",
+      lastUpdate: `1 ${t.weekAgo}`,
     },
   ]
 
   const recentUpdates = [
     {
       id: 1,
-      family: "Al-Mahmoud Family",
-      title: "Layla's Treatment Progress",
-      message: "Thank you for your support! Layla is responding well to treatment.",
-      date: "2 days ago",
+      family: t.alMahmoudFamily,
+      title: t.laylasTreatmentProgress,
+      message: t.laylasTreatmentMessage,
+      date: `2 ${t.daysAgo}`,
       image: "/placeholder.svg?height=50&width=50&text=Update+1",
     },
     {
       id: 2,
-      family: "Abu Hassan Family",
-      title: "New Temporary Housing",
-      message: "The family has moved to better temporary accommodation.",
-      date: "1 week ago",
+      family: t.abuHassanFamily,
+      title: t.newTemporaryHousing,
+      message: t.newTemporaryHousingMessage,
+      date: `1 ${t.weekAgo}`,
       image: "/placeholder.svg?height=50&width=50&text=Update+2",
     },
   ]
+
+  const handleDonateClick = (familyName: string, familyId: string) => {
+    setSelectedFamily({ name: familyName, id: familyId })
+    setShowDonationForm(true)
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -112,9 +249,11 @@ export default function DonorDashboardPage() {
               </Avatar>
               <div className="text-center sm:text-left">
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-black">
-                  Welcome back, {donorData.name.split(" ")[0]}!
+                  {t.welcomeBack}, {donorData.name.split(" ")[0]}!
                 </h1>
-                <p className="text-sm sm:text-base text-gray-600">Member since {donorData.joinDate}</p>
+                <p className="text-sm sm:text-base text-gray-600">
+                  {t.memberSince} {donorData.joinDate}
+                </p>
               </div>
             </div>
           </div>
@@ -133,7 +272,7 @@ export default function DonorDashboardPage() {
                     <p className="text-xl sm:text-2xl font-bold text-[#007A3D]">
                       ${donorData.totalDonated.toLocaleString()}
                     </p>
-                    <p className="text-xs sm:text-sm text-gray-600">Total Donated</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{t.totalDonated}</p>
                   </div>
                 </div>
               </CardContent>
@@ -147,7 +286,7 @@ export default function DonorDashboardPage() {
                   </div>
                   <div>
                     <p className="text-xl sm:text-2xl font-bold text-[#007A3D]">{donorData.familiesSupported}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">Families Supported</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{t.familiesSupported}</p>
                   </div>
                 </div>
               </CardContent>
@@ -161,7 +300,7 @@ export default function DonorDashboardPage() {
                   </div>
                   <div>
                     <p className="text-xl sm:text-2xl font-bold text-[#007A3D]">98%</p>
-                    <p className="text-xs sm:text-sm text-gray-600">Impact Rate</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{t.impactRate}</p>
                   </div>
                 </div>
               </CardContent>
@@ -172,16 +311,16 @@ export default function DonorDashboardPage() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
               <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 sm:py-3">
-                Overview
+                {t.overview}
               </TabsTrigger>
               <TabsTrigger value="donations" className="text-xs sm:text-sm py-2 sm:py-3">
-                Donations
+                {t.donations}
               </TabsTrigger>
               <TabsTrigger value="favorites" className="text-xs sm:text-sm py-2 sm:py-3">
-                Favorites
+                {t.favorites}
               </TabsTrigger>
               <TabsTrigger value="settings" className="text-xs sm:text-sm py-2 sm:py-3">
-                Settings
+                {t.settings}
               </TabsTrigger>
             </TabsList>
 
@@ -192,7 +331,7 @@ export default function DonorDashboardPage() {
                   <CardHeader className="px-4 sm:px-6">
                     <CardTitle className="text-[#007A3D] flex items-center space-x-2 text-base sm:text-lg">
                       <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>Recent Updates</span>
+                      <span>{t.recentUpdates}</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6">
@@ -219,7 +358,7 @@ export default function DonorDashboardPage() {
                   <CardHeader className="px-4 sm:px-6">
                     <CardTitle className="text-[#007A3D] flex items-center space-x-2 text-base sm:text-lg">
                       <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>Favorite Families</span>
+                      <span>{t.favoriteFamilies}</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6">
@@ -241,7 +380,7 @@ export default function DonorDashboardPage() {
                         </div>
                         <div className="mb-3">
                           <div className="flex justify-between text-xs sm:text-sm mb-1">
-                            <span className="text-gray-600">Progress</span>
+                            <span className="text-gray-600">{t.fundingProgress}</span>
                             <span className="text-[#007A3D] font-medium">{family.progress}%</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -249,9 +388,11 @@ export default function DonorDashboardPage() {
                           </div>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500">Updated {family.lastUpdate}</span>
+                          <span className="text-xs text-gray-500">
+                            {t.updated} {family.lastUpdate}
+                          </span>
                           <Button size="sm" className="bg-[#D32F2F] hover:bg-[#D32F2F]/90 text-white text-xs px-3 py-1">
-                            Donate
+                            {t.donate}
                           </Button>
                         </div>
                       </div>
@@ -264,7 +405,7 @@ export default function DonorDashboardPage() {
             <TabsContent value="donations" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
               <Card className="bg-white">
                 <CardHeader className="px-4 sm:px-6">
-                  <CardTitle className="text-[#007A3D] text-base sm:text-lg">Donation History</CardTitle>
+                  <CardTitle className="text-[#007A3D] text-base sm:text-lg">{t.donationHistory}</CardTitle>
                 </CardHeader>
                 <CardContent className="px-4 sm:px-6">
                   <div className="space-y-3 sm:space-y-4">
@@ -291,7 +432,7 @@ export default function DonorDashboardPage() {
                             <span className="text-base sm:text-lg font-bold text-[#007A3D]">${donation.amount}</span>
                             <Badge
                               className={
-                                donation.status === "Delivered"
+                                donation.status === t.delivered
                                   ? "bg-green-100 text-green-800 text-xs"
                                   : "bg-yellow-100 text-yellow-800 text-xs"
                               }
@@ -334,7 +475,7 @@ export default function DonorDashboardPage() {
                       </div>
                       <div className="mb-4">
                         <div className="flex justify-between text-xs sm:text-sm mb-1">
-                          <span className="text-gray-600">Funding Progress</span>
+                          <span className="text-gray-600">{t.fundingProgress}</span>
                           <span className="text-[#007A3D] font-medium">{family.progress}%</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
@@ -342,14 +483,17 @@ export default function DonorDashboardPage() {
                         </div>
                       </div>
                       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                        <Button className="flex-1 bg-[#D32F2F] hover:bg-[#D32F2F]/90 text-white text-sm h-10">
-                          Donate Now
+                        <Button
+                          className="flex-1 bg-[#D32F2F] hover:bg-[#D32F2F]/90 text-white text-sm h-10"
+                          onClick={() => handleDonateClick(family.name, family.id.toString())}
+                        >
+                          {t.donateNow}
                         </Button>
                         <Button
                           variant="outline"
                           className="border-[#007A3D] text-[#007A3D] bg-transparent text-sm h-10"
                         >
-                          View Details
+                          {t.viewDetails}
                         </Button>
                       </div>
                     </CardContent>
@@ -361,15 +505,13 @@ export default function DonorDashboardPage() {
             <TabsContent value="settings" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
               <Card className="bg-white">
                 <CardHeader className="px-4 sm:px-6">
-                  <CardTitle className="text-[#007A3D] text-base sm:text-lg">Account Settings</CardTitle>
+                  <CardTitle className="text-[#007A3D] text-base sm:text-lg">{t.accountSettings}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 px-4 sm:px-6">
-                  <p className="text-sm sm:text-base text-gray-600">
-                    Manage your account preferences and notification settings.
-                  </p>
+                  <p className="text-sm sm:text-base text-gray-600">{t.accountSettingsDesc}</p>
                   <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white text-sm h-10">
                     <Settings className="w-4 h-4 mr-2" />
-                    Edit Profile
+                    {t.editProfile}
                   </Button>
                 </CardContent>
               </Card>
@@ -378,6 +520,18 @@ export default function DonorDashboardPage() {
         </div>
       </main>
       <Footer />
+
+      {showDonationForm && selectedFamily && (
+        <DonationForm
+          familyName={selectedFamily.name}
+          familyId={selectedFamily.id}
+          onClose={() => {
+            setShowDonationForm(false)
+            setSelectedFamily(null)
+          }}
+          language={language}
+        />
+      )}
     </div>
   )
 }

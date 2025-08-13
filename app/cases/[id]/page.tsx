@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { DonationForm } from "@/components/donation-form"
 import {
   Heart,
   MapPin,
@@ -25,6 +26,7 @@ import Link from "next/link"
 
 export default function CaseDetailsPage({ params }: { params: { id: string } }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [showDonationForm, setShowDonationForm] = useState(false)
 
   // Mock data - in real app this would come from API based on params.id
   const caseData = {
@@ -315,7 +317,10 @@ export default function CaseDetailsPage({ params }: { params: { id: string } }) 
                     </div>
                   </div>
 
-                  <Button className="w-full bg-[#D32F2F] hover:bg-[#D32F2F]/90 text-white text-lg py-3">
+                  <Button
+                    className="w-full bg-[#D32F2F] hover:bg-[#D32F2F]/90 text-white text-lg py-3"
+                    onClick={() => setShowDonationForm(true)}
+                  >
                     <ExternalLink className="w-5 h-5 mr-2" />
                     Donate Now
                   </Button>
@@ -369,6 +374,10 @@ export default function CaseDetailsPage({ params }: { params: { id: string } }) 
         </div>
       </main>
       <Footer />
+
+      {showDonationForm && (
+        <DonationForm familyName={caseData.family} familyId={caseData.id} onClose={() => setShowDonationForm(false)} />
+      )}
     </div>
   )
 }

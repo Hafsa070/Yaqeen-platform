@@ -207,12 +207,11 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="relative h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center">
           <div
-  className="absolute inset-0 bg-cover bg-center"
-  style={{
-    backgroundImage: "url('/hero.jpg')",
-  }}
-/>
-
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/placeholder.svg?height=600&width=1200')",
+            }}
+          />
           <div className="absolute inset-0 bg-black/60" />
           <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">{t.heroTitle}</h1>

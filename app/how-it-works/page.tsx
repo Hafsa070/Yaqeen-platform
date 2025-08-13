@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -6,114 +9,254 @@ import { UserPlus, Shield, Heart, CheckCircle, Users, FileText, CreditCard, Mess
 import Link from "next/link"
 
 export default function HowItWorksPage() {
+  const [language, setLanguage] = useState("ar")
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const currentLang = document.documentElement.lang || "ar"
+      setLanguage(currentLang)
+    }
+
+    handleLanguageChange()
+    window.addEventListener("languagechange", handleLanguageChange)
+    const observer = new MutationObserver(handleLanguageChange)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] })
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange)
+      observer.disconnect()
+    }
+  }, [])
+
+  const translations = {
+    ar: {
+      title: "كيف تعمل",
+      titleYaqeen: "يقين",
+      subtitle: "ربط العائلات في غزة بالمتبرعين الكرماء من خلال منصة شفافة وآمنة ومؤثرة",
+      needHelp: "أحتاج مساعدة",
+      wantToHelp: "أريد المساعدة",
+      mainTitle: "خطوات بسيطة، تأثير قوي",
+      mainSubtitle: "منصتنا تسهل على العائلات الحصول على المساعدة وعلى المتبرعين إحداث فرق",
+      journeyTitle: "رحلتك مع يقين",
+      journeySubtitle: "سواء كنت تبحث عن المساعدة أو تقدم الدعم، نحن نرشدك في كل خطوة",
+      ctaTitle: "مستعد لإحداث فرق؟",
+      ctaSubtitle: "انضم إلى آلاف العائلات والمتبرعين الذين هم بالفعل جزء من مجتمع يقين",
+      requestAssistance: "طلب المساعدة",
+      startDonating: "ابدأ التبرع",
+      familyJourney: "رحلة العائلة",
+      donorJourney: "رحلة المتبرع",
+      steps: [
+        {
+          title: "التسجيل",
+          subtitle: "اختر دورك",
+          description: "انضم كعائلة محتاجة أو كمتبرع كريم. كل مسار مصمم لجعل العملية بسيطة وآمنة.",
+          details: [
+            "العائلات: شارك قصتك واحتياجاتك",
+            "المتبرعون: حدد تفضيلات العطاء",
+            "عملية تحقق سريعة",
+            "إنشاء حساب آمن",
+          ],
+        },
+        {
+          title: "التحقق والمطابقة",
+          subtitle: "الثقة والشفافية",
+          description: "نتحقق من جميع العائلات ونطابقها مع المتبرعين بناءً على التفضيلات والاحتياجات العاجلة.",
+          details: ["التحقق من الوثائق للعائلات", "فحص الخلفية والتحقق", "خوارزمية مطابقة ذكية", "عملية مراجعة شفافة"],
+        },
+        {
+          title: "عملية التبرع",
+          subtitle: "آمنة ومباشرة",
+          description: "يمكن للمتبرعين تصفح الحالات المتحققة والمساهمة مباشرة من خلال طرق دفع آمنة.",
+          details: ["تصفح حالات العائلات المتحققة", "اختيار مبلغ التبرع", "معالجة دفع آمنة", "دعم مباشر للعائلة"],
+        },
+        {
+          title: "التأكيد والتغذية الراجعة",
+          subtitle: "تتبع تأثيرك",
+          description: "احصل على تحديثات حول كيفية إحداث تبرعك فرقاً وتتبع تقدم العائلة.",
+          details: [
+            "تتبع التبرعات في الوقت الفعلي",
+            "تحديثات تقدم العائلة",
+            "تقارير التأثير والصور",
+            "نظام تغذية راجعة مجتمعي",
+          ],
+        },
+      ],
+      familySteps: [
+        "قدم طلب المساعدة",
+        "أكمل عملية التحقق",
+        "احصل على مطابقة مع متبرعين كرماء",
+        "شارك التحديثات مع الداعمين",
+      ],
+      donorSteps: ["أنشئ ملف المتبرع الخاص بك", "تصفح حالات العائلات المتحققة", "قم بتبرعات آمنة", "تتبع تأثيرك"],
+    },
+    en: {
+      title: "How",
+      titleYaqeen: "Yaqeen",
+      subtitle:
+        "Connecting families in Gaza with generous donors through a transparent, secure, and impactful platform",
+      needHelp: "I Need Help",
+      wantToHelp: "I Want to Help",
+      mainTitle: "Simple Steps, Powerful Impact",
+      mainSubtitle: "Our platform makes it easy for families to get help and donors to make a difference",
+      journeyTitle: "Your Journey with Yaqeen",
+      journeySubtitle: "Whether you're seeking help or offering support, we guide you every step of the way",
+      ctaTitle: "Ready to Make a Difference?",
+      ctaSubtitle: "Join thousands of families and donors who are already part of the Yaqeen community",
+      requestAssistance: "Request Assistance",
+      startDonating: "Start Donating",
+      familyJourney: "Family Journey",
+      donorJourney: "Donor Journey",
+      steps: [
+        {
+          title: "Sign Up",
+          subtitle: "Choose Your Role",
+          description:
+            "Join as a family in need or as a generous donor. Each path is designed to make the process simple and secure.",
+          details: [
+            "Families: Share your story and needs",
+            "Donors: Set your giving preferences",
+            "Quick verification process",
+            "Secure account creation",
+          ],
+        },
+        {
+          title: "Verification & Matching",
+          subtitle: "Trust & Transparency",
+          description: "We verify all families and match them with donors based on preferences and urgent needs.",
+          details: [
+            "Document verification for families",
+            "Background checks and validation",
+            "Smart matching algorithm",
+            "Transparent review process",
+          ],
+        },
+        {
+          title: "Donation Process",
+          subtitle: "Safe & Direct",
+          description: "Donors can browse verified cases and contribute directly through secure payment methods.",
+          details: [
+            "Browse verified family cases",
+            "Choose donation amount",
+            "Secure payment processing",
+            "Direct family support",
+          ],
+        },
+        {
+          title: "Confirmation & Feedback",
+          subtitle: "Track Your Impact",
+          description: "Receive updates on how your donation is making a difference and track the family's progress.",
+          details: [
+            "Real-time donation tracking",
+            "Family progress updates",
+            "Impact reports and photos",
+            "Community feedback system",
+          ],
+        },
+      ],
+      familySteps: [
+        "Submit your assistance request",
+        "Complete verification process",
+        "Get matched with generous donors",
+        "Share updates with supporters",
+      ],
+      donorSteps: [
+        "Create your donor profile",
+        "Browse verified family cases",
+        "Make secure donations",
+        "Track your impact",
+      ],
+    },
+  }
+
+  const t = translations[language]
+
   const steps = [
     {
       number: "01",
-      title: "Sign Up",
-      subtitle: "Choose Your Role",
-      description:
-        "Join as a family in need or as a generous donor. Each path is designed to make the process simple and secure.",
+      title: t.steps[0].title,
+      subtitle: t.steps[0].subtitle,
+      description: t.steps[0].description,
       icon: UserPlus,
       color: "[#007A3D]",
-      details: [
-        "Families: Share your story and needs",
-        "Donors: Set your giving preferences",
-        "Quick verification process",
-        "Secure account creation",
-      ],
+      details: t.steps[0].details,
     },
     {
       number: "02",
-      title: "Verification & Matching",
-      subtitle: "Trust & Transparency",
-      description: "We verify all families and match them with donors based on preferences and urgent needs.",
+      title: t.steps[1].title,
+      subtitle: t.steps[1].subtitle,
+      description: t.steps[1].description,
       icon: Shield,
       color: "[#D32F2F]",
-      details: [
-        "Document verification for families",
-        "Background checks and validation",
-        "Smart matching algorithm",
-        "Transparent review process",
-      ],
+      details: t.steps[1].details,
     },
     {
       number: "03",
-      title: "Donation Process",
-      subtitle: "Safe & Direct",
-      description: "Donors can browse verified cases and contribute directly through secure payment methods.",
+      title: t.steps[2].title,
+      subtitle: t.steps[2].subtitle,
+      description: t.steps[2].description,
       icon: Heart,
       color: "[#007A3D]",
-      details: [
-        "Browse verified family cases",
-        "Choose donation amount",
-        "Secure payment processing",
-        "Direct family support",
-      ],
+      details: t.steps[2].details,
     },
     {
       number: "04",
-      title: "Confirmation & Feedback",
-      subtitle: "Track Your Impact",
-      description: "Receive updates on how your donation is making a difference and track the family's progress.",
+      title: t.steps[3].title,
+      subtitle: t.steps[3].subtitle,
+      description: t.steps[3].description,
       icon: CheckCircle,
       color: "[#D32F2F]",
-      details: [
-        "Real-time donation tracking",
-        "Family progress updates",
-        "Impact reports and photos",
-        "Community feedback system",
-      ],
+      details: t.steps[3].details,
     },
   ]
 
   const userJourneys = [
     {
-      type: "Family Journey",
+      type: t.familyJourney,
       icon: Users,
       color: "[#007A3D]",
       steps: [
-        { icon: FileText, text: "Submit your assistance request" },
-        { icon: Shield, text: "Complete verification process" },
-        { icon: Heart, text: "Get matched with generous donors" },
-        { icon: MessageSquare, text: "Share updates with supporters" },
+        { icon: FileText, text: t.familySteps[0] },
+        { icon: Shield, text: t.familySteps[1] },
+        { icon: Heart, text: t.familySteps[2] },
+        { icon: MessageSquare, text: t.familySteps[3] },
       ],
     },
     {
-      type: "Donor Journey",
+      type: t.donorJourney,
       icon: Heart,
       color: "[#D32F2F]",
       steps: [
-        { icon: UserPlus, text: "Create your donor profile" },
-        { icon: Users, text: "Browse verified family cases" },
-        { icon: CreditCard, text: "Make secure donations" },
-        { icon: CheckCircle, text: "Track your impact" },
+        { icon: UserPlus, text: t.donorSteps[0] },
+        { icon: Users, text: t.donorSteps[1] },
+        { icon: CreditCard, text: t.donorSteps[2] },
+        { icon: CheckCircle, text: t.donorSteps[3] },
       ],
     },
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`min-h-screen bg-white ${language === "ar" ? "rtl" : "ltr"}`}>
       <Header />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#007A3D]/10 to-[#D32F2F]/10 py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 sm:mb-6">
-            How <span className="text-[#007A3D]">Ya</span>
-            <span className="text-[#D32F2F]">qeen</span> Works
+            {t.title} <span className="text-[#007A3D]">يا</span>
+            <span className="text-[#D32F2F]">قين</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-            Connecting families in Gaza with generous donors through a transparent, secure, and impactful platform
+            {t.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link href="/signup/family">
               <Button className="bg-[#007A3D] hover:bg-[#007A3D]/90 text-white px-6 sm:px-8 py-3 w-full sm:w-auto">
-                I Need Help
+                {t.needHelp}
               </Button>
             </Link>
             <Link href="/signup/donor">
               <Button className="bg-[#D32F2F] hover:bg-[#D32F2F]/90 text-white px-6 sm:px-8 py-3 w-full sm:w-auto">
-                I Want to Help
+                {t.wantToHelp}
               </Button>
             </Link>
           </div>
@@ -124,10 +267,8 @@ export default function HowItWorksPage() {
       <section className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-black mb-3 sm:mb-4">Simple Steps, Powerful Impact</h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-              Our platform makes it easy for families to get help and donors to make a difference
-            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-black mb-3 sm:mb-4">{t.mainTitle}</h2>
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">{t.mainSubtitle}</p>
           </div>
 
           <div className="space-y-12 sm:space-y-20">
@@ -142,7 +283,15 @@ export default function HowItWorksPage() {
               return (
                 <div
                   key={step.number}
-                  className={`flex flex-col ${isEven ? "xl:flex-row" : "xl:flex-row-reverse"} items-center gap-8 sm:gap-12`}
+                  className={`flex flex-col ${
+                    language === "ar"
+                      ? isEven
+                        ? "xl:flex-row-reverse"
+                        : "xl:flex-row"
+                      : isEven
+                        ? "xl:flex-row"
+                        : "xl:flex-row-reverse"
+                  } items-center gap-8 sm:gap-12`}
                 >
                   {/* Content */}
                   <div className="flex-1 space-y-4 sm:space-y-6">
@@ -152,13 +301,13 @@ export default function HowItWorksPage() {
                       >
                         <span className={`text-lg sm:text-2xl font-bold ${colorClass}`}>{step.number}</span>
                       </div>
-                      <div className="text-center sm:text-left">
+                      <div className="text-center sm:text-start">
                         <h3 className="text-xl sm:text-2xl font-bold text-black">{step.title}</h3>
                         <p className={`text-base sm:text-lg ${colorClass} font-medium`}>{step.subtitle}</p>
                       </div>
                     </div>
 
-                    <p className="text-base sm:text-lg text-gray-600 leading-relaxed text-center sm:text-left">
+                    <p className="text-base sm:text-lg text-gray-600 leading-relaxed text-center sm:text-start">
                       {step.description}
                     </p>
 
@@ -191,10 +340,8 @@ export default function HowItWorksPage() {
       <section className="py-12 sm:py-20 bg-[#F5F5F5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-black mb-3 sm:mb-4">Your Journey with Yaqeen</h2>
-            <p className="text-base sm:text-lg text-gray-600">
-              Whether you're seeking help or offering support, we guide you every step of the way
-            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-black mb-3 sm:mb-4">{t.journeyTitle}</h2>
+            <p className="text-base sm:text-lg text-gray-600">{t.journeySubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
@@ -230,7 +377,9 @@ export default function HowItWorksPage() {
                               </div>
                             </div>
                             {idx < journey.steps.length - 1 && (
-                              <div className="w-px h-6 sm:h-8 bg-gray-200 ml-4 sm:ml-5 mt-2"></div>
+                              <div
+                                className={`w-px h-6 sm:h-8 bg-gray-200 mt-2 ${language === "ar" ? "mr-4 sm:mr-5" : "ml-4 sm:ml-5"}`}
+                              ></div>
                             )}
                           </div>
                         )
@@ -247,19 +396,15 @@ export default function HowItWorksPage() {
       {/* CTA Section */}
       <section className="py-12 sm:py-20 bg-gradient-to-r from-[#007A3D] to-[#D32F2F]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
-            Ready to Make a Difference?
-          </h2>
-          <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8">
-            Join thousands of families and donors who are already part of the Yaqeen community
-          </p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">{t.ctaTitle}</h2>
+          <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8">{t.ctaSubtitle}</p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link href="/signup/family">
               <Button
                 variant="secondary"
                 className="bg-white text-[#007A3D] hover:bg-gray-100 px-6 sm:px-8 py-3 w-full sm:w-auto"
               >
-                Request Assistance
+                {t.requestAssistance}
               </Button>
             </Link>
             <Link href="/signup/donor">
@@ -267,7 +412,7 @@ export default function HowItWorksPage() {
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-[#D32F2F] px-6 sm:px-8 py-3 bg-transparent w-full sm:w-auto"
               >
-                Start Donating
+                {t.startDonating}
               </Button>
             </Link>
           </div>

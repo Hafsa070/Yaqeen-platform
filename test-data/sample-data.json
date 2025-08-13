@@ -1,0 +1,179 @@
+{
+  "adminAccounts": [
+    {
+      "id": "admin001",
+      "email": "admin@yaqeen.org",
+      "password": "Admin123!",
+      "name": "أحمد محمد",
+      "role": "Super Admin",
+      "permissions": ["all"],
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": "admin002",
+      "email": "manager@yaqeen.org",
+      "password": "Manager123!",
+      "name": "فاطمة أحمد",
+      "role": "Operations Manager",
+      "permissions": ["view_cases", "manage_families", "view_reports"],
+      "createdAt": "2024-01-15"
+    }
+  ],
+
+  "familyAccounts": [
+    {
+      "id": "family001",
+      "email": "abu.omar@email.com",
+      "password": "Family123!",
+      "name": "عائلة أبو عمر",
+      "phone": "+970599123456",
+      "address": "غزة، حي الشجاعية",
+      "familySize": 7,
+      "status": "verified",
+      "story": "عائلة مكونة من 7 أفراد فقدت منزلها في القصف. الأب يعمل في البناء والأم ربة منزل. لديهم 5 أطفال في سن المدرسة.",
+      "urgencyLevel": "high",
+      "assistanceTypes": ["shelter", "food", "medical", "education"],
+      "createdAt": "2024-02-01"
+    },
+    {
+      "id": "family002",
+      "email": "um.sara@email.com",
+      "password": "Family456!",
+      "name": "عائلة أم سارة",
+      "phone": "+970599234567",
+      "address": "رفح، المخيم",
+      "familySize": 5,
+      "status": "verified",
+      "story": "أرملة مع 4 أطفال. تحتاج مساعدة في توفير الطعام والدواء لطفلها المريض بالسكري.",
+      "urgencyLevel": "critical",
+      "assistanceTypes": ["food", "medical", "education"],
+      "createdAt": "2024-02-05"
+    },
+    {
+      "id": "family003",
+      "email": "abu.ahmad@email.com",
+      "password": "Family789!",
+      "name": "عائلة أبو أحمد",
+      "phone": "+970599345678",
+      "address": "خان يونس، الأمل",
+      "familySize": 6,
+      "status": "pending",
+      "story": "عائلة نزحت من شمال غزة. يحتاجون مأوى مؤقت ومساعدات غذائية عاجلة.",
+      "urgencyLevel": "high",
+      "assistanceTypes": ["shelter", "food", "clothing"],
+      "createdAt": "2024-02-10"
+    }
+  ],
+
+  "donorAccounts": [
+    {
+      "id": "donor001",
+      "email": "sarah.johnson@email.com",
+      "password": "Donor123!",
+      "name": "Sarah Johnson",
+      "phone": "+1234567890",
+      "organization": "Hearts for Gaza Foundation",
+      "donationType": "monthly",
+      "preferredAmount": 500,
+      "areasOfInterest": ["medical", "education"],
+      "totalDonated": 2500,
+      "donationCount": 5,
+      "createdAt": "2024-01-20"
+    },
+    {
+      "id": "donor002",
+      "email": "mohamed.ali@email.com",
+      "password": "Donor456!",
+      "name": "محمد علي",
+      "phone": "+971501234567",
+      "organization": "",
+      "donationType": "one-time",
+      "preferredAmount": 200,
+      "areasOfInterest": ["food", "shelter"],
+      "totalDonated": 800,
+      "donationCount": 4,
+      "createdAt": "2024-01-25"
+    },
+    {
+      "id": "donor003",
+      "email": "emma.wilson@email.com",
+      "password": "Donor789!",
+      "name": "Emma Wilson",
+      "phone": "+447123456789",
+      "organization": "UK Palestine Solidarity",
+      "donationType": "monthly",
+      "preferredAmount": 300,
+      "areasOfInterest": ["education", "medical", "shelter"],
+      "totalDonated": 1800,
+      "donationCount": 6,
+      "createdAt": "2024-02-01"
+    }
+  ],
+
+  "donations": [
+    {
+      "id": "donation001",
+      "donorId": "donor001",
+      "familyId": "family001",
+      "amount": 500,
+      "currency": "USD",
+      "type": "medical",
+      "status": "completed",
+      "date": "2024-02-15",
+      "description": "Medical assistance for family treatment"
+    },
+    {
+      "id": "donation002",
+      "donorId": "donor002",
+      "familyId": "family002",
+      "amount": 200,
+      "currency": "USD",
+      "type": "food",
+      "status": "completed",
+      "date": "2024-02-12",
+      "description": "Monthly food package"
+    },
+    {
+      "id": "donation003",
+      "donorId": "donor003",
+      "familyId": "family001",
+      "amount": 300,
+      "currency": "USD",
+      "type": "shelter",
+      "status": "pending",
+      "date": "2024-02-18",
+      "description": "Temporary housing assistance"
+    }
+  ],
+
+  "statistics": {
+    "totalFamilies": 156,
+    "verifiedFamilies": 134,
+    "pendingFamilies": 22,
+    "totalDonors": 89,
+    "activeDonors": 67,
+    "totalDonations": 45600,
+    "thisMonthDonations": 8900,
+    "averageDonation": 285,
+    "assistanceTypes": {
+      "food": 45,
+      "medical": 38,
+      "shelter": 32,
+      "education": 28,
+      "clothing": 13
+    },
+    "locations": {
+      "Gaza City": 42,
+      "Rafah": 38,
+      "Khan Younis": 35,
+      "Jabalia": 25,
+      "Deir al-Balah": 16
+    },
+    "urgencyLevels": {
+      "critical": 23,
+      "high": 67,
+      "medium": 44,
+      "low": 22
+    }
+  }
+}
